@@ -1,6 +1,6 @@
-h1 Listing tasks
+h1 Tasks
 
-table
+table.table
   - if @tasks.any?
     thead
       tr
@@ -8,8 +8,8 @@ table
         th Start time
         th End time
         th Path
-        th
-        th
+        th Status
+        th Actions
 
     tbody
       - @tasks.each do |task|
@@ -18,8 +18,11 @@ table
           td = task.start_time.strftime("%d/%m/%Y %H:%M")
           td = task.end_time.strftime("%d/%m/%Y %H:%M")
           td = task.path
-          td = link_to 'Edit', edit_task_path(task)
-          td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
+          td = task.is_executed ? "Yes" : "No"
+          td 
+            = link_to 'Edit', edit_task_path(task)
+            |  | 
+            = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
   - else
     tr
       td No task found.
