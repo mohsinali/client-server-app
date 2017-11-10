@@ -6,6 +6,7 @@
         - @task.errors.full_messages.each do |message|
           li = message
 
+  = f.hidden_field :user_id
   .form-group
     = f.label :name
     = f.text_field :name,class: "form-control"
@@ -18,11 +19,12 @@
   .form-group
     = f.label :file_path
     = f.text_field :path,class: "form-control"
+  - Date::DAYNAMES.each_with_index do |v,i|
+    .form-check
+      label class="form-check-label"
+        = check_box_tag "task[#{i}]",i,@task.days.try(:include?,i),class: "form-check-input days_names"
+        = v
+  = f.hidden_field :days
+  br
   .form-group
-    .row
-      - Date::DAYNAMES.each_with_index do |v,i|
-        .col
-          = f.label "#{v}"
-          = check_box_tag "task[#{i}]",i,@task.days.try(:include?,i),class: "days_names"
-      = f.hidden_field :days
-  .actions = f.submit
+    = f.submit "Submit", :class => 'btn btn-primary'
