@@ -28,6 +28,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        # update days
+        update_days(@task,params[:task][:days].split(','))
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -42,6 +44,8 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
+        # update days
+        update_days(@task,params[:task][:days].split(','))
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
@@ -69,6 +73,10 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :start_time, :end_time, :path)
+      params.require(:task).permit(:name, :start_time, :end_time, :path,:days)
+    end
+
+    def update_days task,days_array
+      task.update(days: days_array)
     end
 end
